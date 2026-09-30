@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anubhav | AI-Native Portfolio</title>
+  <meta name="description" content="Portfolio of Anubhav, Full Stack Developer and CS student specializing in Python, C++, and Generative AI." />
+  <meta property="og:title" content="Anubhav | Portfolio" />
+  <meta property="og:description" content="Full Stack Developer & AI Enthusiast" />
+  <meta property="og:type" content="website" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;800&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+:root {
+  --bg: #f4f2fa; --surface: rgba(255,255,255,.72); --text: #1a1626; --muted: #625d75;
+  --primary: #6d4fc2; --primary-hover: #57399f; --accent: #4f7d59; --border: #d9d4ea;
+  --radius: 22px; --display: 'Syne', sans-serif;
+}
+[data-theme="dark"] {
+  --bg: #0d0c14; --surface: rgba(24,22,36,.68); --text: #f3f1fa; --muted: #a09cb3;
+  --primary: #a78bfa; --primary-hover: #c4b0ff; --accent: #86b48f; --border: #34304a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; overflow-x: hidden; }
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+/* Floating background */
+.bg { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.bg::after { content: ""; position: absolute; inset: 0;
+  background: linear-gradient(90deg, var(--bg) 22%, transparent 75%), linear-gradient(0deg, var(--bg) 2%, transparent 35%); }
+.bg-roll, .bg-float { position: absolute; inset: 0; }
+.bg-float { inset: -6%; }
+
+/* Requirement 1: Image Crop & Enlargement */
+.bg-img { 
+  position: absolute; top: 0; bottom: 0; right: 0; width: 100%;
+  /* Scaled up and repositioned to frame the body and striped shirt */
+  background: url("portfolio_pic_.jpeg") center 20% / 160% no-repeat; 
+}
+@media (min-width: 768px) { 
+  .bg-img { 
+    width: 72%; 
+    background: url("portfolio_pic_.jpeg") right 15% / 160% no-repeat;
+  } 
+}
+[data-theme="dark"] .bg-img { filter: brightness(.4) saturate(1.5) contrast(1.15); }
+[data-theme="light"] .bg-img { opacity: .5; filter: saturate(1.2); }
+
+.orb { position: absolute; width: 38vmax; height: 38vmax; border-radius: 50%; filter: blur(90px); opacity: .28; }
+.o1 { background: var(--primary); top: -10%; left: -8%; }
+.o2 { background: var(--accent); bottom: -12%; right: 10%; }
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--primary));
+  transform: scaleX(0); transform-origin: 0 50%; z-index: 2000; }
+
+.status-strip { background: var(--primary); color: var(--bg); font-size: .82rem; padding: 6px 15px; text-align: center; font-weight: 600; }
+.pulse { display: inline-block; width: 8px; height: 8px; background: var(--bg); border-radius: 50%; margin-right: 8px; animation: pulse 2s infinite; }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,255,255,.6); } 70%,100% { box-shadow: 0 0 0 7px transparent; } }
+
+.navbar { display: flex; justify-content: space-between; align-items: center; padding: 20px 5%; max-width: 1200px; margin: 0 auto; position: relative; z-index: 10; }
+.logo { font: 800 1.5rem var(--display); }
+.nav-controls { display: flex; gap: 15px; align-items: center; }
+.btn { padding: 10px 18px; border-radius: 999px; text-decoration: none; font: 600 .9rem 'Inter', sans-serif; cursor: pointer; border: 1px solid transparent; transition: background .2s, color .2s; display: inline-block; }
+.btn.primary { background: var(--primary); color: var(--bg); }
+.btn.primary:hover { background: var(--primary-hover); }
+.btn.outline { border-color: var(--primary); color: var(--primary); background: transparent; }
+.btn.outline:hover { background: var(--primary); color: var(--bg); }
+#theme-toggle { background: none; border: none; color: var(--text); font-size: 1.2rem; cursor: pointer; transition: color 0.3s; }
+#theme-toggle:hover { color: var(--primary); }
+
+/* Hero */
+.hero { position: relative; max-width: 1200px; margin: 0 auto; padding: 8vh 5% 10vh; min-height: 82vh; display: flex; flex-direction: column; justify-content: center; z-index: 5; }
+
+/* Requirement 2: Heading Resizing (scaled down for better proportion over shirt) */
+.hero h1 { 
+  font: 800 clamp(2.5rem, 8vw, 5.5rem)/1.05 var(--display); 
+  letter-spacing: -.04em; margin-bottom: 18px; 
+  text-shadow: 0 4px 20px rgba(0,0,0,0.15); /* Adds slight pop off the shirt */
+}
+
+.ch { display: inline-block; overflow: hidden; vertical-align: top; padding-bottom: .12em; perspective: 700px; }
+.ch > span { display: inline-block; will-change: transform; }
+.subtitle { font: 600 clamp(1.1rem, 2.4vw, 1.6rem) var(--display); color: var(--primary); margin-bottom: 14px; }
+.hero-desc { max-width: 44ch; font-size: 1.1rem; color: var(--muted); }
+.hero-details { margin: 22px 0; display: flex; flex-wrap: wrap; gap: 8px 24px; color: var(--muted); font-size: .95rem; }
+.hero-details i { color: var(--accent); margin-right: 6px; }
+.hero-cta { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 10px; }
+.float-layer { position: absolute; inset: 0; pointer-events: none; }
+.float-layer span { position: absolute; padding: 8px 16px; border-radius: 999px; font-weight: 600; font-size: .9rem;
+  background: var(--surface); border: 1px solid var(--border); backdrop-filter: blur(10px); }
+
+/* Marquee */
+.marquee { overflow: hidden; padding: 14px 0; border-block: 1px solid var(--border); background: var(--surface); backdrop-filter: blur(8px); position: relative; z-index: 5; }
+.track { display: flex; width: max-content; font: 800 clamp(2.2rem, 6vw, 4.5rem)/1.15 var(--display); white-space: nowrap; }
+.track span { padding-right: .4em; }
+.track.alt { color: transparent; -webkit-text-stroke: 1.5px var(--primary); }
+
+/* Bento */
+.bento-container { display: grid; grid-template-columns: 1fr; gap: 22px; max-width: 1200px; margin: 70px auto 80px; padding: 0 5%; perspective: 1400px; position: relative; z-index: 5; }
+@media (min-width: 768px) { .bento-container { grid-template-columns: repeat(3, 1fr); } .span-2 { grid-column: span 2; } }
+.bento-box { background: var(--surface); backdrop-filter: blur(14px); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px;
+  transition: border-color .2s, transform .25s, opacity 0.6s ease-out, translate 0.6s ease-out; will-change: transform, opacity; }
+.bento-box:hover { transform: translateY(-4px); border-color: var(--primary); }
+.section-title { font: 800 1.5rem var(--display); margin-bottom: 12px; }
+.text-sm { font-size: .85rem; } .text-muted { color: var(--muted); }
+.chart-container { position: relative; height: 260px; margin-top: 16px; }
+.skills-grid { display: flex; flex-wrap: wrap; gap: 10px; }
+.skill-tag { border: 1px solid var(--border); padding: 6px 14px; border-radius: 999px; font-size: .85rem; background: var(--bg); }
+.github-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-top: 16px; }
+.repo-card { padding: 16px; border: 1px solid var(--border); border-radius: 14px; text-decoration: none; color: inherit; display: block; background: var(--bg); transition: border-color .2s; }
+.repo-card:hover { border-color: var(--accent); }
+.repo-card h3 { font-size: 1rem; margin-bottom: 6px; color: var(--accent); }
+.repo-card p { font-size: .8rem; color: var(--muted); margin-bottom: 10px; }
+.repo-stats { display: flex; gap: 12px; font-size: .8rem; color: var(--muted); }
+.contact-info p { margin-bottom: 8px; color: var(--muted); }
+.socials { display: flex; gap: 16px; margin: 14px 0; font-size: 1.5rem; }
+.socials a { color: var(--text); transition: color .2s; } .socials a:hover { color: var(--primary); }
+.contact-form { display: flex; flex-direction: column; gap: 10px; margin-top: 18px; }
+.contact-form input, .contact-form textarea { width: 100%; padding: 11px 14px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font: inherit; }
+footer { text-align: center; padding: 24px; color: var(--muted); font-size: .9rem; }
+
+/* Chat */
+.chat-fab { position: fixed; bottom: 28px; right: 28px; width: 60px; height: 60px; background: var(--primary); color: var(--bg); border-radius: 50%;
+  display: grid; place-items: center; font-size: 1.5rem; border: none; cursor: pointer; z-index: 1000; box-shadow: 0 8px 24px rgba(0,0,0,.35); transition: transform 0.2s; }
+.chat-fab:hover { transform: scale(1.05); }
+.chat-panel { position: fixed; bottom: 100px; right: 28px; width: 350px; height: 500px; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: 0 16px 40px rgba(0,0,0,.4); display: flex; flex-direction: column; z-index: 999;
+  transform-origin: bottom right; transition: opacity .3s, transform .3s, visibility 0s; }
+.chat-panel.hidden { opacity: 0; visibility: hidden; pointer-events: none; transform: scale(.9); transition: opacity .3s, transform .3s, visibility 0s .3s; }
+.chat-header { padding: 15px; display: flex; justify-content: space-between; align-items: center; background: var(--primary); color: var(--bg); border-radius: var(--radius) var(--radius) 0 0; font-weight: 600; }
+.chat-header button { background: none; border: none; color: inherit; font-size: 1.5rem; cursor: pointer; }
+.chat-body { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.message { padding: 10px 14px; border-radius: 14px; max-width: 85%; font-size: .9rem; overflow-wrap: anywhere; white-space: pre-wrap; }
+.message.system { background: var(--surface); border: 1px solid var(--border); align-self: flex-start; border-bottom-left-radius: 3px; }
+.message.user { background: var(--primary); color: var(--bg); align-self: flex-end; border-bottom-right-radius: 3px; }
+.chat-input-area { padding: 14px; border-top: 1px solid var(--border); display: flex; gap: 10px; }
+.chat-input-area input { flex: 1; padding: 10px 14px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); color: var(--text); outline: none; }
+.chat-input-area input:focus { border-color: var(--primary); }
+.chat-input-area button { background: var(--primary); color: var(--bg); border: none; width: 40px; height: 40px; border-radius: 50%; cursor: pointer; transition: background 0.2s; }
+.chat-input-area button:hover:not(:disabled) { background: var(--primary-hover); }
+.chat-input-area button:disabled { opacity: .5; cursor: not-allowed; }
+
+/* Requirement 3: Scroll-Driven "Map Flow" Effect */
+.scrolly-map {
+  position: fixed; top: 0; left: 3%; height: 100vh; width: 3px;
+  z-index: 1; pointer-events: none;
+}
+.scrolly-line {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  background: linear-gradient(to bottom, transparent, var(--border) 15%, var(--border) 85%, transparent);
+}
+.scrolly-progress {
+  position: absolute; top: 0; left: 0; width: 100%; height: 0%;
+  background: linear-gradient(to bottom, transparent, var(--primary) 20%, var(--primary));
+  box-shadow: 0 0 10px var(--primary);
+  will-change: height;
+}
+.scrolly-dot {
+  position: absolute; bottom: -6px; left: -5px; width: 14px; height: 14px;
+  border-radius: 50%; background: var(--accent);
+  box-shadow: 0 0 12px var(--accent);
+  animation: pulse-dot 2s infinite;
+}
+@keyframes pulse-dot {
+  0% { box-shadow: 0 0 0 0 rgba(79, 125, 89, 0.6); }
+  70% { box-shadow: 0 0 0 12px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+@media (min-width: 768px) {
+  .scrolly-map { left: 5%; } /* Aligned just outside the main container flow */
+}
+
+/* Scroll Reveal Transitions */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+}
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (max-width: 767px) { .bg-img { width: 100%; opacity: .55; background-position: right 15%; } .float-layer { display: none; } }
+@media (max-width: 480px) { .chat-panel { width: calc(100vw - 40px); right: 20px; bottom: 90px; } }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } .pulse, .scrolly-dot { animation: none; } .reveal { transition: none; opacity: 1; transform: none; } }
+  </style>
+</head>
+<body>
+
+  <!-- Floating Background Elements -->
+  <div class="bg">
+    <div class="bg-img"></div>
+    <div class="orb o1"></div>
+    <div class="orb o2"></div>
+  </div>
+  
+  <!-- Map Flow Effect Structure -->
+  <div class="scrolly-map">
+    <div class="scrolly-line"></div>
+    <div class="scrolly-progress" id="map-progress">
+      <div class="scrolly-dot"></div>
+    </div>
+  </div>
+
+  <!-- Top Progress Bar -->
+  <div class="progress" id="top-progress"></div>
+
+  <!-- Navbar -->
+  <nav class="navbar reveal active">
+    <div class="logo">Anubhav</div>
+    <div class="nav-controls">
+      <button id="theme-toggle" aria-label="Toggle Theme"><i class="fas fa-sun"></i></button>
+      <a href="#contact" class="btn primary">Contact</a>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero reveal">
+    <h1 class="hero-title">Anubhav</h1>
+    <div class="subtitle">Full Stack Developer & AI Enthusiast</div>
+    <p class="hero-desc">Building scalable applications and exploring the frontiers of Generative AI. Specializing in Python and C++.</p>
+    
+    <div class="hero-details">
+      <span><i class="fas fa-map-marker-alt"></i> Gurugram, India</span>
+      <span><i class="fas fa-graduation-cap"></i> CS Student</span>
+    </div>
+
+    <div class="hero-cta">
+      <a href="#projects" class="btn primary">View Work</a>
+      <a href="https://github.com" target="_blank" class="btn outline"><i class="fab fa-github"></i> GitHub</a>
+    </div>
+  </section>
+
+  <!-- Marquee -->
+  <div class="marquee reveal">
+    <div class="track">
+      <span>INNOVATE</span><span class="alt">CREATE</span><span>DEVELOP</span><span class="alt">BUILD</span>
+      <span>INNOVATE</span><span class="alt">CREATE</span><span>DEVELOP</span><span class="alt">BUILD</span>
+    </div>
+  </div>
+
+  <!-- Bento Grid Container -->
+  <section class="bento-container" id="projects">
+    <!-- About Section -->
+    <div class="bento-box span-2 reveal">
+      <h2 class="section-title">About Me</h2>
+      <p class="text-muted">
+        I am a dedicated Computer Science student and Full Stack Developer with a deep interest in artificial intelligence. I enjoy crafting AI-native architectures, designing smooth user interfaces, and solving complex algorithmic challenges.
+      </p>
+    </div>
+
+    <!-- Skills Section -->
+    <div class="bento-box reveal">
+      <h2 class="section-title">Core Skills</h2>
+      <div class="skills-grid">
+        <span class="skill-tag">Python</span>
+        <span class="skill-tag">C++</span>
+        <span class="skill-tag">Gen AI</span>
+        <span class="skill-tag">JavaScript</span>
+        <span class="skill-tag">React</span>
+        <span class="skill-tag">Node.js</span>
+      </div>
+    </div>
+
+    <!-- Requirement 4: Content Cleanup (Removed "IIT Startup" & "Evoke") -->
+    <div class="bento-box span-2 reveal">
+      <h2 class="section-title">GitHub Projects</h2>
+      <div class="github-grid">
+        <a href="#" class="repo-card">
+          <h3>AI-Chatbot Engine</h3>
+          <p>A sophisticated conversational AI engine utilizing local LLMs and Python.</p>
+          <div class="repo-stats">
+            <span><i class="fas fa-circle" style="color: #3572A5; font-size: 0.6rem; margin-right: 4px;"></i> Python</span>
+            <span><i class="fas fa-star"></i> 24</span>
+          </div>
+        </a>
+        <a href="#" class="repo-card">
+          <h3>Portfolio Site</h3>
+          <p>My personal AI-native portfolio website featuring modern CSS architectures.</p>
+          <div class="repo-stats">
+            <span><i class="fas fa-circle" style="color: #e34c26; font-size: 0.6rem; margin-right: 4px;"></i> HTML/CSS</span>
+            <span><i class="fas fa-star"></i> 12</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Contact Section -->
+    <div class="bento-box reveal" id="contact">
+      <h2 class="section-title">Get in Touch</h2>
+      <p class="text-sm text-muted">Let's build something amazing together.</p>
+      <div class="socials">
+        <a href="#"><i class="fab fa-github"></i></a>
+        <a href="#"><i class="fab fa-linkedin"></i></a>
+        <a href="#"><i class="fab fa-twitter"></i></a>
+      </div>
+      <div class="contact-form">
+        <input type="email" placeholder="Your Email">
+        <textarea placeholder="Your Message" rows="3"></textarea>
+        <button class="btn primary">Send Message</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2026 Anubhav. All rights reserved.</p>
+  </footer>
+
+  <!-- AI Chat Widget -->
+  <button class="chat-fab" aria-label="Open AI Assistant"><i class="fas fa-comment-dots"></i></button>
+  <div class="chat-panel hidden">
+    <div class="chat-header">
+      <span>AI Assistant</span>
+      <button class="close-chat" aria-label="Close Chat">&times;</button>
+    </div>
+    <div class="chat-body">
+      <div class="message system">Hello! I'm Anubhav's digital assistant. How can I help you learn more about his background or projects today?</div>
+    </div>
+    <div class="chat-input-area">
+      <input type="text" placeholder="Ask anything...">
+      <button aria-label="Send"><i class="fas fa-paper-plane"></i></button>
+    </div>
+  </div>
+
+  <script>
+    // Theme Toggle Logic
+    const themeToggle = document.getElementById('theme-toggle');
+    const htmlEl = document.documentElement;
+    const themeIcon = themeToggle.querySelector('i');
+
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = htmlEl.getAttribute('data-theme');
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      htmlEl.setAttribute('data-theme', newTheme);
+      
+      if(newTheme === 'dark') {
+        themeIcon.classList.replace('fa-moon', 'fa-sun');
+      } else {
+        themeIcon.classList.replace('fa-sun', 'fa-moon');
+      }
+    });
+
+    // Chat Widget Logic
+    const chatFab = document.querySelector('.chat-fab');
+    const chatPanel = document.querySelector('.chat-panel');
+    const closeChatBtn = document.querySelector('.close-chat');
+
+    chatFab.addEventListener('click', () => {
+      chatPanel.classList.remove('hidden');
+      chatFab.style.transform = 'scale(0)';
+    });
+
+    closeChatBtn.addEventListener('click', () => {
+      chatPanel.classList.add('hidden');
+      chatFab.style.transform = 'scale(1)';
+    });
+
+    // Scroll Map Flow & Top Progress Logic
+    const topProgress = document.getElementById('top-progress');
+    const mapProgress = document.getElementById('map-progress');
+
+    window.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const scrollPercent = (scrollTop / docHeight) * 100;
+      
+      // Update horizontal top bar
+      topProgress.style.transform = `scaleX(${scrollPercent / 100})`;
+      
+      // Update vertical scrollytelling map path
+      mapProgress.style.height = `${scrollPercent}%`;
+    });
+
+    // Intersection Observer for smooth section reveals
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.1
+    };
+
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('active');
+          observer.unobserve(entry.target); // Reveal only once
+        }
+      });
+    }, observerOptions);
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      revealObserver.observe(el);
+    });
+
+    // Simple Marquee Animation (Horizontal scroll emulation)
+    const marqueeTrack = document.querySelector('.track');
+    let marqueeOffset = 0;
+    
+    function animateMarquee() {
+      marqueeOffset -= 0.05;
+      if (marqueeOffset <= -50) { // arbitrary reset point based on cloned content length
+        marqueeOffset = 0;
+      }
+      marqueeTrack.style.transform = `translateX(${marqueeOffset}%)`;
+      requestAnimationFrame(animateMarquee);
+    }
+    
+    // Quick clone of marquee content to allow seamless loop
+    marqueeTrack.innerHTML += marqueeTrack.innerHTML;
+    animateMarquee();
+  </script>
+</body>
+</html>
